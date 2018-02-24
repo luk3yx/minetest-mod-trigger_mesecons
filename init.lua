@@ -82,7 +82,7 @@ minetest.register_node("trigger_mesecons:detector", {
         action_off = function(pos, node)
             trigger.send(pos, false)
         end,
-    },
+    }},
 })
 
 -- For easier typing
