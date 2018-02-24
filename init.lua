@@ -58,6 +58,33 @@ mesecon.register_node("trigger_mesecons:emitter", {
     }},
 })
 
+
+-- Define the detector node
+minetest.register_node("trigger_mesecons:detector", {
+    description = "Trigger: Mesecons Detector",
+    sounds = default.node_sound_stone_defaults(),
+    on_trigger = function(pos, node, value)
+        if value then
+            minetest.set_node(pos, {name = "trigger_mesecons:detector_on"})
+            mesecon.receptor_on(pos, mesecon.rules.alldirs)
+        else
+            minetest.set_node(pos, {name = "trigger_mesecons:detector_off"})
+            mesecon.receptor_off(pos, mesecon.rules.alldirs)
+        end
+    end,
+    groups = {oddly_breakable_by_hand = 1},
+    tiles = {"trigger_texture.png^[colorize:#cc06^mesecons_wire_inv.png"},
+    mesecons = {effector = {
+        rules = mesecon.rules.alldirs,
+        action_on = function(pos, node)
+            trigger.send(pos, true)
+        end,
+        action_off = function(pos, node)
+            trigger.send(pos, false)
+        end,
+    },
+})
+
 -- For easier typing
 minetest.register_alias("trigger_mesecons:emitter", "trigger_mesecons:emitter_off")
 
@@ -65,3 +92,4 @@ minetest.register_alias("trigger_mesecons:emitter", "trigger_mesecons:emitter_of
 minetest.register_alias("trigger:mesecons_emitter", "trigger_mesecons:emitter_off")
 minetest.register_alias("trigger:mesecons_emitter_off", "trigger_mesecons:emitter_off")
 minetest.register_alias("trigger:mesecons_emitter_on", "trigger_mesecons:emitter_on")
+minetest.register_alias("trigger:mesecons_detector", "trigger_mesecons:detector")
